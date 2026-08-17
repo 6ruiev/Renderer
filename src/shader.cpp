@@ -1,4 +1,8 @@
-#include "shader.h"
+#include "OpenGL.h"
+#include "Shader.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 
 namespace  
@@ -136,9 +140,6 @@ namespace
 	}
 
 }
-
-
-
 
 
 Shader::Shader(const std::string& filePath)
