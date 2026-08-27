@@ -10,7 +10,7 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
-	unsigned int getID() const;
+	unsigned int GetID() const;
 
 private:
 	unsigned int ID;

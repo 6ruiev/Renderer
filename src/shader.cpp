@@ -77,7 +77,7 @@ namespace
 
 		int length;
 		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
-		char* message = static_cast<char*>(alloca(length));
+		char* message = (char*)(alloca(length));
 
 		glGetShaderInfoLog(shader, length, &length, message);
 
@@ -163,7 +163,7 @@ void Shader::Unbind() const
 	glUseProgram(0);
 }
 
-unsigned int Shader::getID() const
+unsigned int Shader::GetID() const
 {
 	return ID;
 }
