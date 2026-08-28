@@ -1,6 +1,7 @@
 #include "OpenGL.h"
 #include "Window.h"
 #include <iostream>
+#include <stb_image.h>
 
 #include "Shader.h"
 #include "VertexBuffer.h"
@@ -105,11 +106,11 @@ int main()
 
 	float vertices[]
 	{
-		// positions    
-		-0.5f,   -0.5f,   0.0f,
-		 0.5f,   -0.5f,   0.0f,
-		 0.5f,    0.5f,   0.0f,
-		-0.5f,    0.5f,   0.0f
+		 // positions				// color					// texture
+		-0.5f, -0.5f, 0.0f,		1.0f, 0.0f, 0.0f,		-1.0f, -1.0f,
+		 0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f,		 1.0f, -1.0f,
+		 0.5f,  0.5f, 0.0f,		0.0f, 0.0f, 0.0f,		 1.0f,  1.0f,
+		-0.5f,  0.5f, 0.0f,		0.0f, 1.0f, 1.0f,		-1.0f,  1.0f
 	};
 
 	unsigned int indices[]
@@ -118,15 +119,17 @@ int main()
 		2, 3, 0
 	};
 
+	unsigned int texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 
-	float texture[]
-	{
-		-0.5f,   -0.5f,
-		 0.5f,   -0.5f,
-		 0.5f,    0.5f,
-		-0.5f,    0.5f
-	};
+	int textureWidth, textureHeight, nrChannels;
+	unsigned char* data = stbi_load("res/textures/wall.jpg", &textureWidth, &textureHeight, &nrChannels, 0);
 
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	stbi_image_free(data);
 
 	Shader shader("res/shaders/Basic.shader");
 	shader.Bind();
@@ -135,8 +138,12 @@ int main()
 
 	VertexArray VAO;
 
-	VAO.AttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	VAO.AttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	VAO.AttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	VAO.AttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	VAO.EnableAttribArray(0);
+	VAO.EnableAttribArray(1);
+	VAO.EnableAttribArray(2);
 
 	IndexBuffer IBO(indices, sizeof(indices));
 
