@@ -163,6 +163,21 @@ void Shader::Unbind() const
 	glUseProgram(0);
 }
 
+void Shader::SetUniform1f(const std::string& uniform, float v) const
+{
+	glUniform1f(GetUniformLocation(uniform), v);
+}
+
+int Shader::GetUniformLocation(const std::string& uniform) const
+{
+	int location = glGetUniformLocation(ID, uniform.c_str());
+
+	if (location == -1)
+		std::cout << "Invalid uniform name \n";
+
+	return location;
+}
+
 unsigned int Shader::GetID() const
 {
 	return ID;

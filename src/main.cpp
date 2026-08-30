@@ -8,82 +8,17 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Debug.h"
-
-
-static float x_offset = 0.0f;
-static float y_offset = 0.0f;
-
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	glViewport(0, 0, width, height);
-}
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if (action != GLFW_PRESS)
-	{
-		return;
-	}
-
-	if (key == GLFW_KEY_W)
-	{
-		y_offset += 0.01f;
-	}
-
-	if (key == GLFW_KEY_S)
-	{
-		y_offset -= 0.01f;
-	}
-
-	if (key == GLFW_KEY_D)
-	{
-		x_offset += 0.01f;
-	}
-
-	if (key == GLFW_KEY_A)
-	{
-		x_offset -= 0.01f;
-	}
-
-	if (key == GLFW_KEY_ESCAPE)
-	{
-		glfwSetWindowShouldClose(window, true);
-	}
-
-	if (key == GLFW_KEY_F1)
-	{
-		glfwMaximizeWindow(window);
-	}
-
-	if (key == GLFW_KEY_F2)
-	{
-		glfwRestoreWindow(window);
-	}
-}
+#include "Config.h"
 
 
 int main()
 {
+	Window window;
 
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-
-
-	GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL", 0, 0);
-
-	if (window == nullptr)
-	{
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-
-	glfwMakeContextCurrent(window);
-
+	window.GLFWInit();
+	window.InitWindow(800, 600, "OpenGL", 0, 0);
+	window.SetViewPortSize();
+	window.SetCallbacks();
 
 	// GLAD
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -91,18 +26,6 @@ int main()
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
-
-
-	int width, height;
-
-	glfwGetFramebufferSize(window, &width, &height);
-	glViewport(0, 0, width, height);
-
-
-	// Callbacks
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetKeyCallback(window, key_callback);
-
 
 	float vertices[]
 	{
@@ -151,22 +74,19 @@ int main()
 	glBindVertexArray(0);
 	IBO.Unbind();
 
-	unsigned int x_offsetLocation = glGetUniformLocation(shader.GetID(), "x_offset");
-	unsigned int y_offsetLocation = glGetUniformLocation(shader.GetID(), "y_offset");
-
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(window.GetWindow()))
 	{
 		glClearColor(0.4f, 0.6f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glUniform1f(x_offsetLocation, x_offset);
-		glUniform1f(y_offsetLocation, y_offset);
+		shader.SetUniform1f("x_offset", Offset::x_offset);
+		shader.SetUniform1f("y_offset", Offset::y_offset);
 
 		VAO.Bind();
 
 		GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
 
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(window.GetWindow());
 		glfwPollEvents();
 	}
 

@@ -10,6 +10,9 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
+	void SetUniform1f(const std::string& uniform, float v) const;
+	int GetUniformLocation(const std::string& uniform) const;
+
 	unsigned int GetID() const;
 
 private:
