@@ -24,6 +24,7 @@ void VertexArray::Unbind() const
 void VertexArray::AttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* pointer) const
 {
 	glVertexAttribPointer(index, size, type, normalized, stride, pointer);
+	EnableAttribArray(index);
 }
 
 void VertexArray::EnableAttribArray(GLuint index) const

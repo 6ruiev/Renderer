@@ -1,5 +1,5 @@
 #pragma once
-#include "OpenGL.h"
+#include <glad/glad.h>
 
 class VertexArray
 {

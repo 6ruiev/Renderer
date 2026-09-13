@@ -1,6 +1,4 @@
 #include "Window.h"
-#include <iostream>
-#include "Config.h"
 
 namespace Callbacks
 {
@@ -18,37 +16,63 @@ namespace Callbacks
 
 		if (key == GLFW_KEY_W)
 		{
-			Offset::y_offset += 0.01f;
+			Config::y_offset += 0.01f;
 		}
 
 		if (key == GLFW_KEY_S)
 		{
-			Offset::y_offset -= 0.01f;
+			Config::y_offset -= 0.01f;
 		}
 
 		if (key == GLFW_KEY_D)
 		{
-			Offset::x_offset += 0.01f;
+			Config::x_offset += 0.01f;
 		}
 
 		if (key == GLFW_KEY_A)
 		{
-			Offset::x_offset -= 0.01f;
+			Config::x_offset -= 0.01f;
+		}
+
+		if (key == GLFW_KEY_UP)
+		{
+			if (Config::mix == 1.0f)
+			{
+				return;
+			}
+			
+			if ((1.0f - Config::mix) < 0.05f)
+			{
+				Config::mix += 1.0f - Config::mix;
+				std::cout << Config::mix << std::endl;
+				return;
+			}
+
+			Config::mix += 0.05f;
+			std::cout << Config::mix << std::endl;
+		}
+
+		if (key == GLFW_KEY_DOWN)
+		{
+			if (Config::mix == 0.0f)
+			{
+				return;
+			}
+
+			if (Config::mix < 0.05f)
+			{
+				Config::mix -= Config::mix;
+				std::cout << Config::mix << std::endl;
+				return;
+			}
+
+			Config::mix -= 0.05f;
+			std::cout << Config::mix << std::endl;
 		}
 
 		if (key == GLFW_KEY_ESCAPE)
 		{
 			glfwSetWindowShouldClose(window, true);
-		}
-
-		if (key == GLFW_KEY_F1)
-		{
-			glfwMaximizeWindow(window);
-		}
-
-		if (key == GLFW_KEY_F2)
-		{
-			glfwRestoreWindow(window);
 		}
 	}
 }
@@ -62,19 +86,6 @@ void Window::DestroyWindow()
 {
 	glfwDestroyWindow(window_);
 	window_ = nullptr;
-}
-
-void Window::operator=(Window& w)
-{
-	if (window_)
-	{
-		DestroyWindow();
-	}
-
-	window_ = w.GetWindow();
-
-	w.window_ = nullptr;
-	w.DestroyWindow();
 }
 
 void Window::GLFWInit()
@@ -107,7 +118,7 @@ GLFWwindow* Window::InitWindow(int width, int height, const char* title, GLFWmon
 	return window_;
 }
 
-GLFWwindow* Window::GetWindow()
+GLFWwindow* Window::GetWindow() const
 {
 	return window_;
 }
@@ -129,4 +140,17 @@ void Window::SetCallbacks()
 {
 	glfwSetFramebufferSizeCallback(window_, Callbacks::framebuffer_size_callback);
 	glfwSetKeyCallback(window_, Callbacks::key_callback);
+}
+
+Window& Window::operator=(Window&& other)
+{
+	if (this != &other)
+	{
+		DestroyWindow();
+
+		window_ = other.window_;
+		other.window_ = nullptr;
+	}
+
+	return *this;
 }

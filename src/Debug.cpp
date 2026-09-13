@@ -1,6 +1,4 @@
 #include "Debug.h"
-#include "OpenGL.h"
-#include <iostream>
 
 bool Debug::GLCheckError(const char* file, const char* function, int line)
 {

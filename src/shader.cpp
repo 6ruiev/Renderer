@@ -1,9 +1,4 @@
-#include "OpenGL.h"
 #include "Shader.h"
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
 
 namespace  
 {
@@ -166,6 +161,11 @@ void Shader::Unbind() const
 void Shader::SetUniform1f(const std::string& uniform, float v) const
 {
 	glUniform1f(GetUniformLocation(uniform), v);
+}
+
+void Shader::SetUniform1i(const std::string& uniform, int i) const
+{
+	glUniform1i(GetUniformLocation(uniform), i);
 }
 
 int Shader::GetUniformLocation(const std::string& uniform) const
