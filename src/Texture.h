@@ -13,9 +13,9 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
-	void TexParameteri(GLenum pname, GLfloat param) const;
+	void TexParameteri(GLenum pname, GLint param) const;
 	void LoadTexture(const char* texture, GLint level, GLint internalFormat, GLenum format) const;
-	void ActiveTexUnit(GLenum textureUnit) const;
+	void TexUnit(GLenum textureUnit) const;
 
 private:
 	unsigned int ID;

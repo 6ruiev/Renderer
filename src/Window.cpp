@@ -5,6 +5,8 @@ namespace Callbacks
 	void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	{
 		glViewport(0, 0, width, height);
+		Config::width = width;
+		Config::height = height;
 	}
 
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -68,6 +70,18 @@ namespace Callbacks
 
 			Config::mix -= 0.05f;
 			std::cout << Config::mix << std::endl;
+		}
+
+		if (key == GLFW_KEY_N)
+		{
+			Config::rotate += 0.5f;
+			std::cout << Config::rotate << std::endl;
+		}
+
+		if (key == GLFW_KEY_M)
+		{
+			Config::rotate -= 0.5f;
+			std::cout << Config::rotate << std::endl;
 		}
 
 		if (key == GLFW_KEY_ESCAPE)

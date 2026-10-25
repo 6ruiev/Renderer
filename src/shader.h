@@ -16,6 +16,8 @@ public:
 
 	void SetUniform1f(const std::string& uniform, float v) const;
 	void SetUniform1i(const std::string& uniform, int i) const;
+	void SetUniformMatrix4fv(const std::string& uniform, GLsizei count, GLboolean transpose, const GLfloat* value) const;
+
 	int GetUniformLocation(const std::string& uniform) const;
 
 	unsigned int GetID() const;

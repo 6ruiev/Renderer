@@ -19,7 +19,7 @@ void Texture::Unbind() const
 	glBindTexture(target_, 0);
 }
 
-void Texture::TexParameteri(GLenum pname, GLfloat param) const
+void Texture::TexParameteri(GLenum pname, GLint param) const
 {
 	glTexParameteri(target_, pname, param);
 }
@@ -27,7 +27,7 @@ void Texture::TexParameteri(GLenum pname, GLfloat param) const
 void Texture::LoadTexture(const char* texture, GLint level, GLint internalFormat, GLenum format) const
 {
 	int textureWidth, textureHeight, nrChannels;
-	unsigned char* data = stbi_load(texture, &textureWidth, &textureHeight, &nrChannels, 0);
+	unsigned char* data = stbi_load(texture, &textureWidth, &textureHeight, &nrChannels, STBI_rgb_alpha);
 
 	if (data)
 	{
@@ -54,7 +54,7 @@ void Texture::LoadTexture(const char* texture, GLint level, GLint internalFormat
 }
 
 
-void Texture::ActiveTexUnit(GLenum textureUnit) const
+void Texture::TexUnit(GLenum textureUnit) const
 {
 	glActiveTexture(textureUnit);
 	this->Bind();

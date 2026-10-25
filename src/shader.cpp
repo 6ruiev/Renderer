@@ -168,6 +168,11 @@ void Shader::SetUniform1i(const std::string& uniform, int i) const
 	glUniform1i(GetUniformLocation(uniform), i);
 }
 
+void Shader::SetUniformMatrix4fv(const std::string& uniform, GLsizei count, GLboolean transpose, const GLfloat* value) const
+{
+	glUniformMatrix4fv(GetUniformLocation(uniform), count, transpose, value);
+}
+
 int Shader::GetUniformLocation(const std::string& uniform) const
 {
 	int location = glGetUniformLocation(ID, uniform.c_str());
